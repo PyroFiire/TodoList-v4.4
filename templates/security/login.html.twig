@@ -1,17 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     {% if error %}
-        <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }} </div>
     {% endif %}
 
-    <form action="{{ path('login_check') }}" method="post">
-        <label for="username">Nom d'utilisateur :</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+    {{ form_start(formLogin, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{form_row(formLogin.username, {'full_name':'email', 'attr': {'value': last_username}, 'label':"Email" })}}
+        {{form_row(formLogin.password, {'full_name':'password'})}}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button type="submit" class="btn btn-success">Login</button>   
+    {{ form_end(formLogin) }}
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="_password" />
-
-        <button class="btn btn-success" type="submit">Se connecter</button>
-    </form>
 {% endblock %}
