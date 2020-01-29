@@ -38,7 +38,7 @@ class UserCreateController
     }
 
     /**
-     * @Route("/user/create", name="user_create")
+     * @Route("/users/create", name="user_create")
      */
     public function UserCreate(Request $request)
     {
