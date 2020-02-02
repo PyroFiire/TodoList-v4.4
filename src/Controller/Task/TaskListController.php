@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\TaskRepository;
 
-class ListActionController
+class TaskListController
 {
     private $twig;
     private $taskRepository;
@@ -25,16 +25,13 @@ class ListActionController
     /**
      * @Route("/tasks", name="task_list")
      */
-    public function listAction()
+    public function taskList()
     {
-        /* 3.1 code
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
-        */
-
         $tasks = $this->taskRepository->findAll();
+
         return new Response($this->twig->render(
             'task/list.html.twig', [
-            'task' => $tasks
+            'tasks' => $tasks
         ]));
     }
 }
