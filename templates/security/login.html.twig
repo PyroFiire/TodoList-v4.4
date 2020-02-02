@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }} </div>
+    {% endif %}
+
+    {{ form_start(formLogin, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{form_row(formLogin.username, {'full_name':'email', 'attr': {'value': last_username}, 'label':"Email" })}}
+        {{form_row(formLogin.password, {'full_name':'password'})}}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button type="submit" class="btn btn-success">Login</button>   
+    {{ form_end(formLogin) }}
+
+{% endblock %}
