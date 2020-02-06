@@ -7,6 +7,7 @@ use Twig\Environment;
 use App\Form\Task\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -19,18 +20,21 @@ class TaskCreateController
     private $form;
     private $manager;
     private $router;
+    private $security;
     
     public function __construct(
         Environment $twig,
         FormFactoryInterface $form,
         EntityManagerInterface $manager,
-        UrlGeneratorInterface $router
+        UrlGeneratorInterface $router,
+        Security $security
     )
     {
         $this->twig = $twig;
         $this->form = $form;
         $this->manager = $manager;
         $this->router = $router;
+        $this->security = $security;
     }
 
     /**
@@ -44,6 +48,7 @@ class TaskCreateController
 
         if($form->isSubmitted() && $form->isValid()){
 
+            $task->setAuthor($this->security->getUser());
             $this->manager->persist($task);
             $this->manager->flush();
 

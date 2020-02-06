@@ -4,7 +4,7 @@
     <div class="row">
         {{ form_start(form, {'action' : path('task_edit', { 'id' : task.id })}) }}
             {{ form_widget(form) }}
-
+            {% if task.author %}<p>Auteur :{{ task.author.username }}</p>{% else %}<p>Auteur : Anonyme</p>{% endif %}
             <button type="submit" class="btn btn-success pull-right">Modifier</button>
         {{ form_end(form) }}
     </div>
