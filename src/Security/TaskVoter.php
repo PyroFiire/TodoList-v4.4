@@ -56,11 +56,11 @@ class TaskVoter extends Voter
     private function canEdit(Task $subject, User $user)
     {
         //return false if Anonyme Task
-        if ($subject->getAuthor() === null) {
-            return false;
+        if ($subject->getAuthor() !== null) {
+            // return true if User created this Task
+            return $user->getId() === $subject->getAuthor()->getId();
         }
-        // return true if User created this Task
-        return $user->getId() === $subject->getAuthor()->getId();
+        return false;
     }
     
     private function canDelete(Task $subject, User $user)
