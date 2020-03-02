@@ -93,6 +93,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "liip/test-fixtures-bundle": {
+        "version": "1.0.0"
+    },
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
@@ -116,6 +119,9 @@
     },
     "symfony/asset": {
         "version": "v4.4.3"
+    },
+    "symfony/browser-kit": {
+        "version": "v4.4.5"
     },
     "symfony/cache": {
         "version": "v4.4.2"
@@ -147,6 +153,9 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v4.4.3"
+    },
+    "symfony/dom-crawler": {
+        "version": "v4.4.5"
     },
     "symfony/dotenv": {
         "version": "v4.4.2"
