@@ -2,48 +2,68 @@
 
 namespace tests\Entity;
 
-use App\Entity\Task;
 use App\Entity\User;
-use PHPUnit\Framework\TestCase;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class UserTest extends TestCase
+class UserTest extends KernelTestCase
 {
-
-    public function testClass()
+    public function assertHasErrors($object, int $number = 0): void
     {
-        $user = new User();
-        $this->assertInstanceOf(User::class, $user);
+        self::bootKernel();
+        $errors = self::$container->get('validator')->validate($object);
+        $messages = [];
+        /** @var ConstraintViolation $error */
+        foreach($errors as $error) {
+            $messages[] = strtoupper($error->getPropertyPath()) . ' => ' . $error->getMessage();
+        }
 
-        return $user;
+        $this->assertCount($number, $errors, implode(' ||| ' , $messages));
     }
 
-    /**
-     * @depends testClass
-     */
-    public function testWithConstructor(User $user)
+    public function getEntity(): User
     {
-        $this->assertInstanceOf(ArrayCollection::class, $user->getTasks());
+        return (new User())
+            ->setUsername('username')
+            ->setEmail('email@email.com')
+            ->setPassword('password')
+            ->setRoles(['ROLE_USER'])
+        ;
     }
 
-    /**
-     * @depends testClass
-     */
-    public function testGetAndSetMethods(User $user)
+    public function getText(int $number): string
     {
-        $user->setUsername('username');
-        $user->setEmail('email@email.com');
-        $user->setPassword('password');
-        $user->setRoles(['ROLE_USER']);
+        $text = '';
+        for ($i=0; $i < $number; $i++) {
+            $text = $text.'a';
+        }
 
-        
-        $this->assertNull($user->getId());
-        $this->assertEquals('username', $user->getUsername());
-        $this->assertEquals('email@email.com', $user->getEmail());
-        $this->assertEquals('password', $user->getPassword());
-        $this->assertNull($user->getSalt());
-        $this->assertEmpty($user->eraseCredentials());
-        $this->assertEquals(['ROLE_USER'], $user->getRoles());
+        return $text;
+    }
 
+    public function testValidEntity()
+    {
+        $this->assertHasErrors($this->getEntity(), 0);
+    }
+
+    public function testInvalidBlanckCodeEntity()
+    {
+        $this->assertHasErrors($this->getEntity()->setUsername(''), 1);
+        $this->assertHasErrors($this->getEntity()->setEmail(''), 1);
+        $this->assertHasErrors($this->getEntity()->setPassword(''), 1);
+        $this->assertHasErrors($this->getEntity()->setRoles([]), 1);
+    }
+
+    public function testInvalidLengthEntity()
+    {
+        $this->assertHasErrors($this->getEntity()->setUsername($this->getText(256)), 1);
+        $this->assertHasErrors($this->getEntity()->setEmail($this->getText(256).'@test.com'), 1);
+        $this->assertHasErrors($this->getEntity()->setPassword($this->getText(256)), 1);
+    }
+
+    public function testInvalidEmailEntity()
+    {
+        $this->assertHasErrors($this->getEntity()->setEmail('test\ger@test.com'), 1);
+        $this->assertHasErrors($this->getEntity()->setEmail('test-test.com'), 1);
+        $this->assertHasErrors($this->getEntity()->setEmail('test@@test.com'), 1);
     }
 }

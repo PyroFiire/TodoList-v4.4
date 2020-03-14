@@ -3,56 +3,55 @@
 namespace tests\Entity;
 
 use App\Entity\Task;
-use App\Entity\User;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class TaskTest extends TestCase
+class TaskTest extends KernelTestCase
 {
-
-    public function testClass()
+    public function assertHasErrors($object, int $number = 0): void
     {
-        $task = new Task();
-        $this->assertInstanceOf(Task::class, $task);
+        self::bootKernel();
+        $errors = self::$container->get('validator')->validate($object);
+        $messages = [];
+        /** @var ConstraintViolation $error */
+        foreach($errors as $error) {
+            $messages[] = strtoupper($error->getPropertyPath()) . ' => ' . $error->getMessage();
+        }
 
-        return $task;
+        $this->assertCount($number, $errors, implode(' ||| ' , $messages));
     }
 
-    /**
-     * @depends testClass
-     */
-    public function testWithConstructor(Task $task)
+    public function getEntity(): Task
     {
-        $this->assertFalse($task->isDone());
-        $this->assertInstanceOf(\DateTime::class, $task->getCreatedAt());
+        return (new Task())
+            ->setTitle('Title')
+            ->setContent('Content')
+        ;
     }
 
-    /**
-     * @depends testClass
-     */
-    public function testGetAndSetMethods(Task $task)
+    public function getText(int $number): string
     {
-        $task->setCreatedAt(new \DateTime);
-        $task->setTitle('TITLE');
-        $task->setContent('CONTENT');
-        $task->setAuthor(new User);
-        $task->toggle(true);
-        
-        $this->assertNull($task->getId());
-        $this->assertInstanceOf(\DateTime::class, $task->getCreatedAt());
-        $this->assertEquals('TITLE', $task->getTitle());
-        $this->assertEquals('CONTENT', $task->getContent());
-        $this->assertInstanceOf(User::class, $task->getAuthor());
-        $this->assertTrue($task->isDone());
+        $text = '';
+        for ($i=0; $i < $number; $i++) {
+            $text = $text.'a';
+        }
+
+        return $text;
     }
 
-    // public function testWithOutConstructor()
-    // {
-    //     $taskMock = $this->getMockBuilder(Task::class)
-    //       ->disableOriginalConstructor()
-    //       ->getMock();
+    public function testValidEntity()
+    {
+        $this->assertHasErrors($this->getEntity(), 0);
+    }
 
-    //     $this->assertInstanceOf(Task::class, $taskMock);
-    //     $this->assertNull($taskMock->isDone());
-    //     $this->assertNull($taskMock->getCreatedAt());
-    // }
+    public function testInvalidBlanckCodeEntity()
+    {
+        $this->assertHasErrors($this->getEntity()->setTitle(''), 1);
+        $this->assertHasErrors($this->getEntity()->setContent(''), 1);
+    }
+
+    public function testInvalidLengthEntity()
+    {
+        $this->assertHasErrors($this->getEntity()->setTitle($this->getText(256)), 1);
+        $this->assertHasErrors($this->getEntity()->setContent($this->getText(2001)), 1);
+    }
 }
