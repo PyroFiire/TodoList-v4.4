@@ -1,98 +1,80 @@
 <!DOCTYPE html>
 <html lang="fr">
-
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
+        <meta name="description" content="Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !">
+        <meta name="author" content="Christophe G.">
         <title>To Do List app</title>
-
-        <!-- Bootstrap Core CSS -->
-        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-
-        <!-- Custom CSS -->
-        <link href="{{ asset('css/shop-homepage.css') }}" rel="stylesheet">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <style type="text/css">
+            h1, h2{
+                font-family: monospace;
+            }
+            .my-shadow{
+                box-shadow: 8px 8px 12px black;
+            }
+        </style>
+        {% block stylesheets %}{% endblock %}
     </head>
 
     <body>
         <nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;" role="navigation">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">To Do List app</a>
-
                     <img src="{{ asset('img/Logo_OpenClassrooms.png') }}" alt="OpenClassrooms" />
+                    <a href="{{path('homepage')}}" class="navbar-brand">To Do List app</a>
+                </div>
+                <div class="navbar-right">
+                    {% if is_granted('ROLE_ADMIN')  %} <a href="{{path('user_list')}}" class="btn btn-primary m-1">Liste des utilisateurs</a> {% endif %}
+                    {% if is_granted('ROLE_ADMIN')  %} <a href="{{path('user_create')}}" class="btn btn-success m-1">Créer un utilisateur</a> {% endif %}
+                    {% if app.user %} <a href="{{path('logout')}}" class="btn btn-danger m-1">Se déconnecter</a> {% endif %}
+                    {% if not app.user and 'login' != app.request.attributes.get('_route') %} <a href="{{path('login')}}" class="btn btn-success m-1">Se connecter</a> {% endif %}
                 </div>
             </div>
         </nav>
 
         <!-- Page Content -->
-        <div class="container">
-            <div class="row">
-                {% if is_granted('ROLE_ADMIN')  %}
-                <a href="{{path('user_create')}}" class="btn btn-primary">Créer un utilisateur</a>
-                {% endif %}
-                {% if app.user %}
-                <a href="{{path('logout')}}" class="pull-right btn btn-danger">Se déconnecter</a>
-                {% endif %}
+        <div class="container-fluid" style="background-color:#fddab2;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for flash_message in app.session.flashBag.get('success') %}
+                            <div class="alert alert-success my-2" role="alert">
+                                <strong>Superbe !</strong> {{ flash_message }}
+                            </div>
+                        {% endfor %}
 
-                {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-                <a href="{{path('login')}}" class="btn btn-success">Se connecter</a>
-                {% endif %}
-            </div>
+                        {% for flash_message in app.session.flashBag.get('error') %}
+                            <div class="alert alert-danger my-2" role="alert">
+                                <strong>Oops !</strong> {{ flash_message }}
+                            </div>
+                        {% endfor %}
 
-            <div class="row">
-                <div class="col-md-12">
-                    {% for flash_message in app.session.flashBag.get('success') %}
-                        <div class="alert alert-success" role="alert">
-                            <strong>Superbe !</strong> {{ flash_message }}
-                        </div>
-                    {% endfor %}
-
-                    {% for flash_message in app.session.flashBag.get('error') %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Oops !</strong> {{ flash_message }}
-                        </div>
-                    {% endfor %}
-
-                    {% block header_title %}{% endblock %}
-                    {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list">{% endblock %}
+                        {% block header_title %}{% endblock %}
+                        {% block header_img %}<img class="img-fluid my-shadow my-2" src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list" >{% endblock %}
+                    </div>
                 </div>
             </div>
-
-            <br />
-
-            <div class="row">
-                <div class="col-md-12">
-                    {% block body %}{% endblock %}
-                </div>
-            </div>
+            {% block body %}{% endblock %}
         </div>
-        <!-- /.container -->
 
-        <div class="container">
-
-            <hr>
+        <div class="container-fluid py-1" style="background-color:#fddab2;">
             <footer>
                 <div class="row">
                     <div class="col-lg-12">
+                        <hr>
                         <p class="pull-right">Copyright &copy; OpenClassrooms</p>
                     </div>
                 </div>
             </footer>
-
         </div>
 
-        <script src="{{ asset('js/jquery.js') }}"></script>
-        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <!-- JAVASCRIPTS -->
+        <!-- Boostrap 4 -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
     </body>
 </html>
