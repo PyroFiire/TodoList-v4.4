@@ -23,9 +23,13 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src/Controller/</directory>
+            <directory suffix=".php">src/DataFixtures/</directory>
             <directory suffix=".php">src/Entity</directory>
-            <directory>src/Controller/DefaultController.php</directory>
-            <!-- <directory suffix=".php">src/Security</directory> -->
+            <directory suffix=".php">src/Form</directory>
+            <!-- <directory suffix=".php">src/Migrations/</directory> -->
+            <directory suffix=".php">src/Repository</directory>
+            <directory suffix=".php">src/Security</directory>
         </whitelist>
     </filter>
 

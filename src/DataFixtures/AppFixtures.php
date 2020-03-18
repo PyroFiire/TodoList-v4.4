@@ -29,8 +29,19 @@ class AppFixtures extends Fixture
         $users[] = $user;
         $manager->persist($user);
 
-        // 9 USERS
-        for ($i=0; $i < 9 ; $i++) { 
+        // BASIC USER
+        $user = new User();
+        $user
+            ->setUsername('user')
+            ->setEmail('user@user.com')
+            ->setPassword($this->encoder->encodePassword($user, 'goodPassword'))
+            ->setRoles(['ROLE_USER'])
+        ;
+        $users[] = $user;
+        $manager->persist($user);
+
+        // Add 8 USERS, total=10
+        for ($i=1; $i < 9 ; $i++) { 
             $user = new User();
             $user
                 ->setUsername('username'.$i)
@@ -43,7 +54,7 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
-        // 30 TASKS
+        // Add 30 TASKS
         for ($i=0; $i < 30 ; $i++) { 
             $task = new Task();
             $task->setTitle('Title '.$i);
@@ -52,7 +63,6 @@ class AppFixtures extends Fixture
             ;
             $manager->persist($task);
         }
-
 
         $manager->flush();
     }

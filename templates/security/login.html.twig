@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block header_title %}
+    <div class="col-md-12 text-center my-3">
+        <h1>Connection</h1>
+    </div>
+{% endblock %}
+
 {% block body %}
     <div class="container">
         {% if error %}
@@ -11,7 +17,7 @@
             {{form_row(formLogin.password, {'full_name':'password'})}}
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             <div class="text-right">
-                <button type="submit" class="btn btn-success">Login</button>
+                <button type="submit" class="btn btn-success">Se connecter</button>
             </div>
         {{ form_end(formLogin) }}
     </div>

@@ -3,22 +3,12 @@
 namespace tests\Entity;
 
 use App\Entity\Task;
+use App\Tests\HelperEntityTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class TaskTest extends KernelTestCase
 {
-    public function assertHasErrors($object, int $number = 0): void
-    {
-        self::bootKernel();
-        $errors = self::$container->get('validator')->validate($object);
-        $messages = [];
-        /** @var ConstraintViolation $error */
-        foreach($errors as $error) {
-            $messages[] = strtoupper($error->getPropertyPath()) . ' => ' . $error->getMessage();
-        }
-
-        $this->assertCount($number, $errors, implode(' ||| ' , $messages));
-    }
+    use HelperEntityTrait;
 
     public function getEntity(): Task
     {
@@ -26,16 +16,6 @@ class TaskTest extends KernelTestCase
             ->setTitle('Title')
             ->setContent('Content')
         ;
-    }
-
-    public function getText(int $number): string
-    {
-        $text = '';
-        for ($i=0; $i < $number; $i++) {
-            $text = $text.'a';
-        }
-
-        return $text;
     }
 
     public function testValidEntity()
