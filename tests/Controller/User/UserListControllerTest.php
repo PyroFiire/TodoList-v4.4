@@ -13,10 +13,20 @@ class UserListControllerTest extends WebTestCase
     use FixturesTrait;
     use HelperLoginTrait;
 
+    /**
+     * @var string
+     */
+    private $route;
+
+    public function setUp()
+    {
+        $this->route = '/users';
+    }
+
     public function testRedirectToLogin()
     {
         $client = static::createClient();
-        $client->request('GET', '/users');
+        $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
@@ -26,7 +36,7 @@ class UserListControllerTest extends WebTestCase
         $client = static::createClient();
         $this->login($client, 'admin');
 
-        $client->request('GET', '/users');
+        $client->request('GET', $this->route);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
     }
@@ -37,7 +47,7 @@ class UserListControllerTest extends WebTestCase
         $client = static::createClient();
         $this->login($client, 'user');
 
-        $client->request('GET', '/users');
+        $client->request('GET', $this->route);
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 }
