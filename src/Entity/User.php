@@ -23,8 +23,9 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
+     * @Assert\Length(max="255")
      */
     private $username;
 
@@ -32,11 +33,14 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
+     * @Assert\Length(max="255")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un mot de passe.")
+     * @Assert\Length(max="255")
      */
     private $password;
 
@@ -47,6 +51,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="array")
+     * @Assert\NotBlank(message="Vous devez saisir un role à l'utilisateur.")
      */
     private $roles = [];
 
@@ -105,32 +110,9 @@ class User implements UserInterface
     /**
      * @return Collection|Task[]
      */
-    public function getTasks(): Collection
+    public function getTasks(): ?Collection
     {
         return $this->tasks;
-    }
-
-    public function addTask(Task $task): self
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->setAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Task $task): self
-    {
-        if ($this->tasks->contains($task)) {
-            $this->tasks->removeElement($task);
-            // set the owning side to null (unless already changed)
-            if ($task->getAuthor() === $this) {
-                $task->setAuthor(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getRoles(): ?array

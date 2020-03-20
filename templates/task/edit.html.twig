@@ -1,11 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div class="row">
-        {{ form_start(form, {'action' : path('task_edit', { 'id' : task.id })}) }}
-            {{ form_widget(form) }}
-            {% if task.author %}<p>Auteur :{{ task.author.username }}</p>{% else %}<p>Auteur : Anonyme</p>{% endif %}
-            <button type="submit" class="btn btn-success pull-right">Modifier</button>
-        {{ form_end(form) }}
+{% block header_title %}
+    <div class="col-md-12 text-center my-3">
+        <h1>Modifier une tâche !</h1>
     </div>
 {% endblock %}
+
+{% block header_img %}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ form_start(form) }}
+            {{form_row(form.title)}}
+            {{form_row(form.content)}}
+            {% if task.author %}<p>Auteur : {{ task.author.username }}</p>{% else %}<p>Auteur : Anonyme</p>{% endif %}
+            <div class="text-right">
+                <button type="submit" class="btn btn-success">Modifier</button>
+            </div>
+        {{ form_end(form) }}
+        <div class="">
+            <a href="{{ path('task_list') }}" class="btn btn-secondary">Retour à la liste des tâches</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+

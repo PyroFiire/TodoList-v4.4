@@ -1,37 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
+{% block stylesheets %}
+    <script src="https://kit.fontawesome.com/93cda2868d.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block header_title %}
+    <div class="col-md-12 text-center my-3">
+        <h1>Liste des tâches !</h1>
+    </div>
+{% endblock %}
+
+{% block header_img %}<img class="img-fluid my-shadow mt-3" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 
 {% block body %}
-    <a href="{{ path('task_create') }}" class="btn btn-info pull-right">Créer une tâche</a>
-    <div class="row">
+    <div class="container">
+        <div class="row d-flex justify-content-center flex-wrap py-3">
+            <a href="{{ path('task_create') }}" class="nav-link btn btn-success m-1">Créer une tâche</a>
+            <a href="{{ path('task_list') }}" class="nav-link btn btn-primary m-1">Liste des tâches</a>
+            <a href="{{path('task_list', {'are-done' : 'false'})}}" class="nav-link btn btn-info m-1">Liste des tâches à faire</a>
+            <a href="{{path('task_list', {'are-done' : 'true'})}}" class="nav-link btn btn-secondary m-1">Liste des tâches terminées</a>
+        </div>
+        <div class="row">
         {% for task in tasks %}
-        <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4 class="pull-right">
-                        {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
-                    </h4>
-                    <h4><a href="{{ path('task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
-                    <p>{{ task.content }}</p>
-                    {% if task.author %}<p>Auteur :{{ task.author.username }}</p>{% else %}<p>Auteur : Anonyme</p>{% endif %}
-                </div>
-                <div>
-                    <form action="{{ path('task_toggle', {'id' : task.id }) }}">
-                        <button class="btn btn-success btn-sm pull-right">
+            <div class="col-12 col-md-6 col-xl-4 mb-3 ">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h3>
+                                {% if task.isDone %}<span class="float-right"><i class="fas fa-check"></i></span>{% else %}<span class="float-right"><i class="fas fa-times"></i></span>{% endif %}
+                                <a class="card-title" href="{{ path('task_edit', {'id' : task.id }) }}">{{ task.title }}</a>
+                            </h3>
+                        </div>
+                        <h5 class="card-text">{{ task.content }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{% if task.author %}Auteur : {{ task.author.username }}{% else %}Auteur : Anonyme{% endif %}</h6>
+                        <a href="{{ path('task_toggle', {'id' : task.id }) }}" class="card-link btn btn-success btn-sm">
                             {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                        </button>
-                    </form>
-                    <form action="{{ path('task_delete', {'id' : task.id }) }}">
-                        <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
-                    </form>
+                        </a>
+                        <a href="{{ path('task_delete', {'id' : task.id }) }}" class="btn btn-danger btn-sm pull-right">Supprimer</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% else %}
+            {% else %}
             <div class="alert alert-warning" role="alert">
                 Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
             </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

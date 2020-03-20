@@ -67,7 +67,8 @@ class TaskVoter extends Voter
     {   
         // If he can edit, he can delete
         if ($this->canEdit($subject, $user)) {
-             return true;
+            return true;
         }
+        return false;
     }
 }
