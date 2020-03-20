@@ -3,7 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Tests\HelperLoginTrait;
-use App\DataFixtures\AppFixtures;
+use App\DataFixtures\UserFixtures;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -14,10 +14,8 @@ class LogoutControllerTest extends WebTestCase
 
     public function testPage()
     {
-        $this->loadFixtures([AppFixtures::class]);
-        $client = static::createClient();
-        $this->login($client, 'user');
-
+        $this->loadFixtures([UserFixtures::class]);
+        $client = $this->login('user');
         $client->request('GET', '/logout');
         $this->assertResponseRedirects();
     }

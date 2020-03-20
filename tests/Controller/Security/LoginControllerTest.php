@@ -2,8 +2,7 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\HelperLoginTrait;
-use App\DataFixtures\AppFixtures;
+use App\DataFixtures\UserFixtures;
 use Symfony\Component\HttpFoundation\Response;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -11,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class LoginControllerTest extends WebTestCase
 {
     use FixturesTrait;
-    use HelperLoginTrait;
 
     public function testPage()
     {
@@ -38,7 +36,7 @@ class LoginControllerTest extends WebTestCase
 
     public function testSuccessfullLogin()
     {
-        $this->loadFixtures([AppFixtures::class]);
+        $this->loadFixtures([UserFixtures::class]);
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([

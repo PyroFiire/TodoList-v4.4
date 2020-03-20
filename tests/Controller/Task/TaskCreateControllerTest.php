@@ -4,12 +4,12 @@ namespace App\Tests\Controller;
 
 use App\Tests\HelperLoginTrait;
 use App\DataFixtures\UserFixtures;
-use App\Repository\UserRepository;
+use App\Repository\TaskRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserCreateControllerTest extends WebTestCase
+class TaskCreateControllerTest extends WebTestCase
 {
     use FixturesTrait;
     use HelperLoginTrait;
@@ -21,7 +21,7 @@ class UserCreateControllerTest extends WebTestCase
 
     public function setUp()
     {
-        $this->route = '/users/create';
+        $this->route = '/tasks/create';
         $this->loadFixtures([UserFixtures::class]);
     }
 
@@ -32,41 +32,33 @@ class UserCreateControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithAdmin()
-    {
-        $client = $this->login('admin');
-
-        $client->request('GET', $this->route);
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorTextContains('h1', 'Créer un utilisateur !');
-    }
-
-    public function testDeniedAccessWithUser()
+    public function testAccessWithUser()
     {
         $client = $this->login('user');
-
         $client->request('GET', $this->route);
-        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertSelectorTextContains('h1', 'Créer une tâche !');
     }
 
     public function testSuccessForm()
     {
-        $client = $this->login('admin');
+        $client = $this->login('user');
 
         $crawler = $client->request('GET', $this->route);
         $form = $crawler->selectButton('Ajouter')->form([
-            'user[username]' => 'Username',
-            'user[password][first]' => 'password',
-            'user[password][second]' => 'password',
-            'user[email]' => 'email@email.com',
-            'user[roles]' => ['ROLE_USER'],
+            'task[title]' => 'Un titre',
+            'task[content]' => 'Du contenue...',
         ]);
         $client->submit($form);
 
-        $user = self::$container->get(UserRepository::class)->findOneByUsername('Username');
-        $this->assertEquals('Username', $user->getUsername());
+        $task = self::$container->get(TaskRepository::class)->findOneByTitle('Un titre');
+        $this->assertEquals('Un titre', $task->getTitle());
+        $this->assertEquals('Du contenue...', $task->getContent());
+        $this->assertFalse($task->isDone());
+        $this->assertNotEmpty($task->getCreatedAt());
+        $this->assertEquals('user', $task->getAuthor()->getUsername());
 
-        $this->assertResponseRedirects('/');
+        $this->assertResponseRedirects('/tasks');
         $client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('.alert.alert-success');
@@ -74,15 +66,12 @@ class UserCreateControllerTest extends WebTestCase
 
     public function testFailedForm()
     {
-        $client = $this->login('admin');
+        $client = $this->login('user');
 
         $crawler = $client->request('GET', $this->route);
         $form = $crawler->selectButton('Ajouter')->form([
-            'user[username]' => 'aze',
-            'user[password][first]' => 'password',
-            'user[password][second]' => 'fzefz',
-            'user[email]' => 'email@email.com',
-            'user[roles]' => ['ROLE_USER'],
+            'task[title]' => '',
+            'task[content]' => 'Du contenue...',
         ]);
         $client->submit($form);
         $this->assertSelectorExists('.form-error-message');

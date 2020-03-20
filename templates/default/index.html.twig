@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row d-flex justify-content-center flex-wrap py-3">
             <a href="{{ path('task_create') }}" class="nav-link btn btn-success m-1">Créer une tâche</a>
-            <a href="{{ path('task_list') }}" class="nav-link btn btn-primary m-1">Liste des tâche</a>
+            <a href="{{ path('task_list') }}" class="nav-link btn btn-primary m-1">Liste des tâches</a>
             <a href="{{path('task_list', {'are-done' : 'false'})}}" class="nav-link btn btn-info m-1">Liste des tâches à faire</a>
             <a href="{{path('task_list', {'are-done' : 'true'})}}" class="nav-link btn btn-secondary m-1">Liste des tâches terminées</a>
         </div>

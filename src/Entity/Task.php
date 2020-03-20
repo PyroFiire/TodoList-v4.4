@@ -27,11 +27,10 @@ class Task
     private $createdAt;
 
     /**
-     * @var string
      * 
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Vous devez saisir un titre.")
-     * @Assert\Length(max="255")
+     * @Assert\Length(min=2, max="255")
      */
     private $title;
 
@@ -40,7 +39,7 @@ class Task
      * 
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Vous devez saisir du contenu.")
-     * @Assert\Length(max="2000")
+     * @Assert\Length(min=2, max="2000")
      */
     private $content;
 
@@ -84,7 +83,7 @@ class Task
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): ?self
     {
         $this->title = $title;
 

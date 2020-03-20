@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserListControllerTest extends WebTestCase
+class DefaultControllerTest extends WebTestCase
 {
     use FixturesTrait;
     use HelperLoginTrait;
@@ -20,7 +20,7 @@ class UserListControllerTest extends WebTestCase
 
     public function setUp()
     {
-        $this->route = '/users';
+        $this->route = '/tasks/create';
         $this->loadFixtures([UserFixtures::class]);
     }
 
@@ -31,20 +31,11 @@ class UserListControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithAdmin()
-    {
-        $client = $this->login('admin');
-
-        $client->request('GET', $this->route);
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
-    }
-
-    public function testDeniedAccessWithUser()
+    public function testAccessWithUser()
     {
         $client = $this->login('user');
-
         $client->request('GET', $this->route);
-        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertSelectorTextContains('h1', 'Créer une tâche !');
     }
 }

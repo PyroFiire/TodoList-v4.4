@@ -12,19 +12,17 @@ trait HelperLoginTrait
     /**
      * Connecter un utilisateur sur le client en se basant sur le système de Cookie
      **/
-    public function login (KernelBrowser $client, string $name)
+    public function login (string $name): KernelBrowser
     {
+        $client = static::createClient();
         $user = self::$container->get(UserRepository::class)->findOneByUsername($name);
-
         $session = $client->getContainer()->get('session');
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $session->set('_security_main', serialize($token));
         $session->save();
-
         $cookie = new Cookie($session->getName(), $session->getId());
-
         $client->getCookieJar()->set($cookie);
-        
-    }
 
+        return $client;
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Tests\HelperLoginTrait;
-use App\DataFixtures\AppFixtures;
+use App\DataFixtures\UserFixtures;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
@@ -22,6 +22,7 @@ class UserEditControllerTest extends WebTestCase
     public function setUp()
     {
         $this->route = '/users/2/edit';
+        $this->loadFixtures([UserFixtures::class]);
     }
 
     public function testRedirectToLogin()
@@ -33,9 +34,7 @@ class UserEditControllerTest extends WebTestCase
 
     public function testAccessWithAdmin()
     {
-        $this->loadFixtures([AppFixtures::class]);
-        $client = static::createClient();
-        $this->login($client, 'admin');
+        $client = $this->login('admin');
 
         $client->request('GET', $this->route);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
@@ -44,9 +43,7 @@ class UserEditControllerTest extends WebTestCase
 
     public function testDeniedAccessWithUser()
     {
-        $this->loadFixtures([AppFixtures::class]);
-        $client = static::createClient();
-        $this->login($client, 'user');
+        $client = $this->login('user');
 
         $client->request('GET', $this->route);
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
@@ -54,9 +51,7 @@ class UserEditControllerTest extends WebTestCase
 
     public function testSuccessForm()
     {
-        $this->loadFixtures([AppFixtures::class]);
-        $client = static::createClient();
-        $this->login($client, 'admin');
+        $client = $this->login('admin');
 
         $crawler = $client->request('GET', $this->route);
         $form = $crawler->selectButton('Modifier')->form([
@@ -79,9 +74,7 @@ class UserEditControllerTest extends WebTestCase
 
     public function testFailedForm()
     {
-        $this->loadFixtures([AppFixtures::class]);
-        $client = static::createClient();
-        $this->login($client, 'admin');
+        $client = $this->login('admin');
 
         $crawler = $client->request('GET', $this->route);
         $form = $crawler->selectButton('Modifier')->form([

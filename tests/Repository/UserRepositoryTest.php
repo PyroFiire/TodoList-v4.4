@@ -3,6 +3,7 @@
 namespace tests\Repository;
 
 use App\DataFixtures\AppFixtures;
+use App\DataFixtures\UserFixtures;
 use App\Repository\UserRepository;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -13,15 +14,12 @@ class UserRepositoryTest extends WebTestCase
     
     public function setUp(){
         self::bootKernel();
-        // On charge les fixtures dans une classe Spécifique
-        $this->loadFixtures([AppFixtures::class]);
-        // Ou depuis un fichier PHP renvoyant un tableau
-        //$this->loadFixtureFiles([__DIR__ . '/users.php']);
+        $this->loadFixtures([UserFixtures::class]);
     }
 
     public function testCount() {
         $nbUsers = self::$container->get(UserRepository::class)->count([]);
-        $this->assertEquals(10, $nbUsers);
+        $this->assertEquals(3, $nbUsers);
     }
 
     public function testAdminUser(){

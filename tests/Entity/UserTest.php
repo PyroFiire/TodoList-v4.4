@@ -3,23 +3,13 @@
 namespace tests\Entity;
 
 use App\Entity\User;
+use App\Tests\HelperEntityTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserTest extends KernelTestCase
 {
-    public function assertHasErrors($object, int $number = 0): void
-    {
-        self::bootKernel();
-        $errors = self::$container->get('validator')->validate($object);
-        $messages = [];
-        /** @var ConstraintViolation $error */
-        foreach($errors as $error) {
-            $messages[] = strtoupper($error->getPropertyPath()) . ' => ' . $error->getMessage();
-        }
-
-        $this->assertCount($number, $errors, implode(' ||| ' , $messages));
-    }
-
+    use HelperEntityTrait;
+    
     public function getEntity(): User
     {
         return (new User())
@@ -28,16 +18,6 @@ class UserTest extends KernelTestCase
             ->setPassword('password')
             ->setRoles(['ROLE_USER'])
         ;
-    }
-
-    public function getText(int $number): string
-    {
-        $text = '';
-        for ($i=0; $i < $number; $i++) {
-            $text = $text.'a';
-        }
-
-        return $text;
     }
 
     public function testValidEntity()
