@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.8",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
         "symfony/css-selector": "4.4.*",
@@ -22,6 +23,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "liip/test-fixtures-bundle": "1.0.0",
+        "phpstan/phpstan": "^0.12.18",
         "symfony/maker-bundle": "^1.14",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/profiler-pack": "^1.0"
