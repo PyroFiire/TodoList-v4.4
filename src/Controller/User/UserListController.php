@@ -25,7 +25,7 @@ class UserListController
     /**
      * @Route("/users", name="user_list")
      */
-    public function listAction()
+    public function userList()
     {
         $users = $this->userRepository->findAll();
         return new Response($this->twig->render(

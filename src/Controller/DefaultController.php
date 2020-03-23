@@ -20,7 +20,7 @@ class DefaultController
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction()
+    public function homepage()
     {
         return new Response($this->twig->render(
             'default/index.html.twig', [] ));
