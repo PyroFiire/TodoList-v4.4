@@ -9,5 +9,7 @@ class LogoutController
     /**
      * @Route("/logout", name="logout")
      */
-    public function logout(){}
+    public function logout()
+    {
+    }
 }

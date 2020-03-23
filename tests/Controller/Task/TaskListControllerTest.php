@@ -3,8 +3,8 @@
 namespace App\Tests\Controller;
 
 use App\Tests\HelperLoginTrait;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskListControllerTest extends WebTestCase
 {

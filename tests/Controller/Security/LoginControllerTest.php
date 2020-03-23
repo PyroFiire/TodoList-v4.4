@@ -3,9 +3,9 @@
 namespace App\Tests\Controller;
 
 use App\DataFixtures\UserFixtures;
-use Symfony\Component\HttpFoundation\Response;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginControllerTest extends WebTestCase
 {
@@ -26,7 +26,7 @@ class LoginControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([
             'email' => 'BadEmail@email.com',
-            'password' => 'badPassword'
+            'password' => 'badPassword',
         ]);
         $client->submit($form);
         $this->assertResponseRedirects('/login');
@@ -41,7 +41,7 @@ class LoginControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([
             'email' => 'user@user.com',
-            'password' => 'goodPassword'
+            'password' => 'goodPassword',
         ]);
         $client->submit($form);
         $this->assertResponseRedirects('/');

@@ -2,12 +2,12 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\HelperLoginTrait;
 use App\DataFixtures\TaskFixtures;
 use App\Repository\TaskRepository;
-use Symfony\Component\HttpFoundation\Response;
+use App\Tests\HelperLoginTrait;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskToggleControllerTest extends WebTestCase
 {
@@ -39,7 +39,7 @@ class TaskToggleControllerTest extends WebTestCase
 
         $task = self::$container->get(TaskRepository::class)->findOneByTitle('Un titre rédigé par l\'user 1...');
         $this->assertTrue($task->isDone());
-    
+
         $this->assertResponseRedirects('/tasks');
         $client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);

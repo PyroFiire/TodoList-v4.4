@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class UserTest extends KernelTestCase
 {
     use HelperEntityTrait;
-    
+
     public function getEntity(): User
     {
         return (new User())

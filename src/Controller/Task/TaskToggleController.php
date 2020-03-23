@@ -2,13 +2,13 @@
 
 namespace App\Controller\Task;
 
-use Twig\Environment;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
 class TaskToggleController
 {
@@ -22,8 +22,7 @@ class TaskToggleController
         TaskRepository $taskRepository,
         UrlGeneratorInterface $router,
         EntityManagerInterface $manager
-    )
-    {
+    ) {
         $this->twig = $twig;
         $this->taskRepository = $taskRepository;
         $this->router = $router;
@@ -41,7 +40,7 @@ class TaskToggleController
 
         $request->getSession()->getFlashBag()->add(
             'success',
-            sprintf(($task->isDone() == true) ? 'La tâche %s a bien été marquée comme faite.'
+            sprintf((true == $task->isDone()) ? 'La tâche %s a bien été marquée comme faite.'
                                               : 'La tâche %s a bien été marquée comme non terminée.', $task->getTitle())
         );
 

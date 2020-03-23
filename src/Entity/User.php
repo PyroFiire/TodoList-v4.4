@@ -5,8 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -101,11 +101,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSalt(){
-        return NULL;
+    public function getSalt()
+    {
+        return null;
     }
 
-    public function eraseCredentials(){}
+    public function eraseCredentials()
+    {
+    }
 
     /**
      * @return Collection|Task[]
@@ -119,7 +122,7 @@ class User implements UserInterface
     {
         return $this->roles;
     }
-    
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;

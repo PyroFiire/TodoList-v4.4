@@ -27,7 +27,6 @@ class Task
     private $createdAt;
 
     /**
-     * 
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Vous devez saisir un titre.")
      * @Assert\Length(min=2, max="255")
@@ -36,7 +35,7 @@ class Task
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Vous devez saisir du contenu.")
      * @Assert\Length(min=2, max="2000")
@@ -45,7 +44,7 @@ class Task
 
     /**
      * @var bool
-     * 
+     *
      * @ORM\Column(type="boolean")
      */
     private $isDone;

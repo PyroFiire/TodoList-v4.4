@@ -3,19 +3,19 @@
 namespace App\Controller\Task;
 
 use App\Entity\Task;
-use Twig\Environment;
 use App\Form\Task\TaskType;
-use App\Security\TaskVoter;
 use App\Repository\TaskRepository;
+use App\Security\TaskVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
+use Twig\Environment;
 
 class TaskEditController
 {
@@ -26,7 +26,7 @@ class TaskEditController
     private $taskRepository;
     private $security;
     private $voter;
-    
+
     public function __construct(
         Environment $twig,
         FormFactoryInterface $form,
@@ -35,8 +35,7 @@ class TaskEditController
         TaskRepository $taskRepository,
         Security $security,
         TaskVoter $voter
-    )
-    {
+    ) {
         $this->twig = $twig;
         $this->form = $form;
         $this->manager = $manager;
@@ -61,8 +60,7 @@ class TaskEditController
         $form = $this->form->create(TaskType::class, $task);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($task);
             $this->manager->flush();
 
@@ -77,7 +75,7 @@ class TaskEditController
         return new Response($this->twig->render(
             'task/edit.html.twig', [
             'form' => $form->createView(),
-            'task' => $task
+            'task' => $task,
         ]));
     }
 }

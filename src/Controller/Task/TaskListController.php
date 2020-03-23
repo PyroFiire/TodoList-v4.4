@@ -3,11 +3,11 @@
 namespace App\Controller\Task;
 
 use App\Entity\Task;
-use Twig\Environment;
 use App\Repository\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 class TaskListController
 {
@@ -17,8 +17,7 @@ class TaskListController
     public function __construct(
         Environment $twig,
         TaskRepository $taskRepository
-    )
-    {
+    ) {
         $this->twig = $twig;
         $this->taskRepository = $taskRepository;
     }
@@ -30,14 +29,14 @@ class TaskListController
     {
         $tasksAreDone = $request->query->get('are-done');
         // dd($tasksAreDone);
-        if ($tasksAreDone == "") {
+        if ('' == $tasksAreDone) {
             $tasks = $this->taskRepository->findAll();
         }
-        if ($tasksAreDone === "false") {
+        if ('false' === $tasksAreDone) {
             // dd('false');
             $tasks = $this->taskRepository->findBy(['isDone' => '0']);
         }
-        if ($tasksAreDone === "true") {
+        if ('true' === $tasksAreDone) {
             $tasks = $this->taskRepository->findBy(['isDone' => '1']);
         }
 
@@ -45,7 +44,7 @@ class TaskListController
 
         return new Response($this->twig->render(
             'task/list.html.twig', [
-            'tasks' => $tasks
+            'tasks' => $tasks,
         ]));
     }
 }

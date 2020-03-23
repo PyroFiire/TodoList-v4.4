@@ -2,12 +2,12 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\HelperLoginTrait;
 use App\DataFixtures\UserFixtures;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Response;
+use App\Tests\HelperLoginTrait;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserEditControllerTest extends WebTestCase
 {

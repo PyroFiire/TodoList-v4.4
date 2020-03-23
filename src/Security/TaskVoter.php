@@ -4,10 +4,10 @@ namespace App\Security;
 
 use App\Entity\Task;
 use App\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class TaskVoter extends Voter
 {
@@ -17,7 +17,7 @@ class TaskVoter extends Voter
     {
         $this->security = $security;
     }
-    
+
     protected function supports($attribute, $subject)
     {
         // https://symfony.com/doc/current/security/voters.html
@@ -48,6 +48,7 @@ class TaskVoter extends Voter
                 return $this->canDelete($subject, $user);
                 break;
         }
+
         return false;
     }
 
@@ -56,19 +57,21 @@ class TaskVoter extends Voter
     private function canEdit(Task $subject, User $user)
     {
         //return false if Anonyme Task
-        if ($subject->getAuthor() !== null) {
+        if (null !== $subject->getAuthor()) {
             // return true if User created this Task
             return $user->getId() === $subject->getAuthor()->getId();
         }
+
         return false;
     }
-    
+
     private function canDelete(Task $subject, User $user)
-    {   
+    {
         // If he can edit, he can delete
         if ($this->canEdit($subject, $user)) {
             return true;
         }
+
         return false;
     }
 }

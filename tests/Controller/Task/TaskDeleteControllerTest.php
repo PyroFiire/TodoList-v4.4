@@ -2,12 +2,12 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\HelperLoginTrait;
 use App\DataFixtures\TaskFixtures;
 use App\Repository\TaskRepository;
-use Symfony\Component\HttpFoundation\Response;
+use App\Tests\HelperLoginTrait;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskDeleteControllerTest extends WebTestCase
 {
@@ -41,7 +41,7 @@ class TaskDeleteControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('.alert.alert-success');
-        
+
         $task = self::$container->get(TaskRepository::class)->findOneByTitle('Un titre rédigé par l\'user 1...');
         $this->assertEmpty($task);
     }

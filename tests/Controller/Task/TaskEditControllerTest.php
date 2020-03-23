@@ -2,12 +2,12 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\HelperLoginTrait;
 use App\DataFixtures\TaskFixtures;
 use App\Repository\TaskRepository;
-use Symfony\Component\HttpFoundation\Response;
+use App\Tests\HelperLoginTrait;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskEditControllerTest extends WebTestCase
 {
@@ -50,8 +50,6 @@ class TaskEditControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Modifier une tâche !');
     }
 
-    /**
-     */
     public function testDeniedAccessWithBadAuthor()
     {
         $client = $this->login('user2');
