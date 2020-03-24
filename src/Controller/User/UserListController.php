@@ -3,34 +3,21 @@
 namespace App\Controller\User;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class UserListController
+class UserListController extends AbstractController
 {
-    private $twig;
-    private $userRepository;
-
-    public function __construct(
-        Environment $twig,
-        UserRepository $userRepository
-    ) {
-        $this->twig = $twig;
-        $this->userRepository = $userRepository;
-    }
-
     /**
      * @Route("/users", name="user_list")
      */
-    public function userList()
+    public function userList(): Response
     {
-        $users = $this->userRepository->findAll();
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
-        return new Response($this->twig->render(
-            'user/list.html.twig', [
+        return $this->render('user/list.html.twig', [
             'users' => $users,
-        ]));
+        ]);
     }
 }

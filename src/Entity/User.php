@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface
 {
     /**
+     * @var int
+     * 
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,6 +25,8 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @var string
+     * 
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      * @Assert\Length(max="255")
@@ -30,6 +34,8 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @var string
+     * 
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
@@ -38,6 +44,8 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @var string
+     * 
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir un mot de passe.")
      * @Assert\Length(max="255")
@@ -45,11 +53,15 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var Collection|Task[]
+     * 
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="author")
      */
     private $tasks;
 
     /**
+     * @var array
+     * 
      * @ORM\Column(type="array")
      * @Assert\NotBlank(message="Vous devez saisir un role à l'utilisateur.")
      */
@@ -106,7 +118,7 @@ class User implements UserInterface
         return null;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 

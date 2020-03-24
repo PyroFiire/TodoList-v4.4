@@ -2,49 +2,34 @@
 
 namespace App\Controller\Task;
 
-use App\Entity\Task;
 use App\Repository\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class TaskListController
+class TaskListController extends AbstractController
 {
-    private $twig;
-    private $taskRepository;
-
-    public function __construct(
-        Environment $twig,
-        TaskRepository $taskRepository
-    ) {
-        $this->twig = $twig;
-        $this->taskRepository = $taskRepository;
-    }
-
     /**
      * @Route("/tasks", name="task_list")
      */
-    public function taskList(Request $request)
+    public function taskList(Request $request, TaskRepository $taskRepository): Response
     {
         $tasksAreDone = $request->query->get('are-done');
-        // dd($tasksAreDone);
+
+        $tasks = [];
         if ('' == $tasksAreDone) {
-            $tasks = $this->taskRepository->findAll();
+            $tasks = $taskRepository->findAll();
         }
         if ('false' === $tasksAreDone) {
-            // dd('false');
-            $tasks = $this->taskRepository->findBy(['isDone' => '0']);
+            $tasks = $taskRepository->findBy(['isDone' => '0']);
         }
         if ('true' === $tasksAreDone) {
-            $tasks = $this->taskRepository->findBy(['isDone' => '1']);
+            $tasks = $taskRepository->findBy(['isDone' => '1']);
         }
 
-        // $tasks = $this->taskRepository->findAll();
-
-        return new Response($this->twig->render(
-            'task/list.html.twig', [
+        return $this->render( 'task/list.html.twig', [
             'tasks' => $tasks,
-        ]));
+        ]);
     }
 }

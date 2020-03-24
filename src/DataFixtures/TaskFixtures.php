@@ -3,10 +3,10 @@
 namespace App\DataFixtures;
 
 use App\Entity\Task;
-use App\Entity\User;
+use App\DataFixtures\UserFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class TaskFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -15,7 +15,7 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
         return [UserFixtures::class];
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         //one task with author : user
         $task = new Task();

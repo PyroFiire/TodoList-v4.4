@@ -66,7 +66,7 @@ class UserCreateControllerTest extends WebTestCase
         $user = self::$container->get(UserRepository::class)->findOneByUsername('Username');
         $this->assertEquals('Username', $user->getUsername());
 
-        $this->assertResponseRedirects('/');
+        $this->assertResponseRedirects('/users');
         $client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('.alert.alert-success');

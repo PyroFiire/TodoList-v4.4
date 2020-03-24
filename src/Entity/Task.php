@@ -27,6 +27,8 @@ class Task
     private $createdAt;
 
     /**
+     * @var string
+     * 
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Vous devez saisir un titre.")
      * @Assert\Length(min=2, max="255")
@@ -50,6 +52,8 @@ class Task
     private $isDone;
 
     /**
+     * @var User
+     * 
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
      */
     private $author;
@@ -92,8 +96,6 @@ class Task
     public function getContent(): ?string
     {
         return $this->content;
-
-        return $this;
     }
 
     public function setContent(string $content): ?self

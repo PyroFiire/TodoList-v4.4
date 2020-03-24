@@ -1,0 +1,7 @@
+parameters:
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Migrations/*
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository::[a-zA-Z0-9\\_]+\(\)#'

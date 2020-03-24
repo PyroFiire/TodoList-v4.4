@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskVoter extends Voter
 {
+    /**
+     * @var Security
+     */
     private $security;
 
     public function __construct(Security $security)
@@ -30,7 +33,7 @@ class TaskVoter extends Voter
         $user = $token->getUser();
 
         // if the user is anonymous, do not grant access
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return false;
         }
 
@@ -43,10 +46,8 @@ class TaskVoter extends Voter
         switch ($attribute) {
             case 'edit':
                 return $this->canEdit($subject, $user);
-                break;
             case 'delete':
                 return $this->canDelete($subject, $user);
-                break;
         }
 
         return false;
@@ -54,7 +55,7 @@ class TaskVoter extends Voter
 
     // logic, return true or false
 
-    private function canEdit(Task $subject, User $user)
+    private function canEdit(Task $subject, User $user): bool
     {
         //return false if Anonyme Task
         if (null !== $subject->getAuthor()) {
@@ -65,7 +66,7 @@ class TaskVoter extends Voter
         return false;
     }
 
-    private function canDelete(Task $subject, User $user)
+    private function canDelete(Task $subject, User $user): bool
     {
         // If he can edit, he can delete
         if ($this->canEdit($subject, $user)) {

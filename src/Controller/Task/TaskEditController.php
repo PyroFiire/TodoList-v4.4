@@ -4,78 +4,35 @@ namespace App\Controller\Task;
 
 use App\Entity\Task;
 use App\Form\Task\TaskType;
-use App\Repository\TaskRepository;
-use App\Security\TaskVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\Security;
-use Twig\Environment;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class TaskEditController
+class TaskEditController extends AbstractController
 {
-    private $twig;
-    private $form;
-    private $manager;
-    private $router;
-    private $taskRepository;
-    private $security;
-    private $voter;
-
-    public function __construct(
-        Environment $twig,
-        FormFactoryInterface $form,
-        EntityManagerInterface $manager,
-        UrlGeneratorInterface $router,
-        TaskRepository $taskRepository,
-        Security $security,
-        TaskVoter $voter
-    ) {
-        $this->twig = $twig;
-        $this->form = $form;
-        $this->manager = $manager;
-        $this->router = $router;
-        $this->taskRepository = $taskRepository;
-        $this->security = $security;
-        $this->voter = $voter;
-    }
-
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      */
-    public function TaskEdit($id, Request $request)
+    public function TaskEdit(int $id, Request $request, EntityManagerInterface $em): Response
     {
-        $task = $this->taskRepository->findOneById($id);
+        $task = $em->getRepository(Task::class)->findOneById($id);
+        $this->denyAccessUnlessGranted('delete', $task);
+        $form = $this->createForm(TaskType::class, $task);
 
-        $vote = $this->voter->vote($this->security->getToken(), $task, ['edit']);
-        if ($vote < 1) {
-            throw new AccessDeniedException();
-        }
-
-        $form = $this->form->create(TaskType::class, $task);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->persist($task);
-            $this->manager->flush();
+            $em->persist($task);
+            $em->flush();
+            $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'La tâche a bien été modifiée.'
-            );
-
-            return new RedirectResponse($this->router->generate('task_list'));
+            return $this->redirectToRoute('task_list');
         }
 
-        return new Response($this->twig->render(
-            'task/edit.html.twig', [
+        return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'task' => $task,
-        ]));
+        ]);
     }
 }

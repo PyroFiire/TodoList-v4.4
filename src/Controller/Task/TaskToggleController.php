@@ -2,48 +2,28 @@
 
 namespace App\Controller\Task;
 
-use App\Repository\TaskRepository;
+use App\Entity\Task;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class TaskToggleController
+class TaskToggleController extends AbstractController
 {
-    private $twig;
-    private $taskRepository;
-    private $router;
-    private $manager;
-
-    public function __construct(
-        Environment $twig,
-        TaskRepository $taskRepository,
-        UrlGeneratorInterface $router,
-        EntityManagerInterface $manager
-    ) {
-        $this->twig = $twig;
-        $this->taskRepository = $taskRepository;
-        $this->router = $router;
-        $this->manager = $manager;
-    }
-
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      */
-    public function taskToggle($id, Request $request)
+    public function taskToggle(int $id, Request $request, EntityManagerInterface $em): RedirectResponse
     {
-        $task = $this->taskRepository->findOneById($id);
+        $task = $em->getRepository(Task::class)->findOneById($id);
         $task->toggle(!$task->isDone());
-        $this->manager->flush();
-
-        $request->getSession()->getFlashBag()->add(
-            'success',
+        $em->flush();
+        $this->addFlash('success',
             sprintf((true == $task->isDone()) ? 'La tâche %s a bien été marquée comme faite.'
                                               : 'La tâche %s a bien été marquée comme non terminée.', $task->getTitle())
         );
 
-        return new RedirectResponse($this->router->generate('task_list'));
+        return $this->redirectToRoute('task_list');
     }
 }

@@ -4,24 +4,15 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class DefaultController
+class DefaultController extends AbstractController
 {
-    private $twig;
-
-    public function __construct(
-        Environment $twig
-    ) {
-        $this->twig = $twig;
-    }
-
     /**
      * @Route("/", name="homepage")
      */
-    public function homepage()
+    public function homepage(): Response
     {
-        return new Response($this->twig->render(
-            'default/index.html.twig', []));
+        return $this->render('default/index.html.twig', []);
     }
 }
