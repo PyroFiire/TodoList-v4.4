@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "husky": "^4.2.3"
+  },
+  "husky": {
+    "hooks": {
+        "pre-commit": "vendor/bin/php-cs-fixer fix && vendor/bin/phpstan analyse src/ tests/ --level=6"
+    }
   }
 }
