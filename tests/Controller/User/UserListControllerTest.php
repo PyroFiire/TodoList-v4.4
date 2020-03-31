@@ -24,14 +24,14 @@ class UserListControllerTest extends WebTestCase
         $this->loadFixtures([UserFixtures::class]);
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithAdmin()
+    public function testAccessWithAdmin(): void
     {
         $client = $this->login('admin');
 
@@ -40,7 +40,7 @@ class UserListControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
     }
 
-    public function testDeniedAccessWithUser()
+    public function testDeniedAccessWithUser(): void
     {
         $client = $this->login('user');
 

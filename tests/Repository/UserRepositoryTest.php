@@ -17,13 +17,13 @@ class UserRepositoryTest extends WebTestCase
         $this->loadFixtures([UserFixtures::class]);
     }
 
-    public function testCount()
+    public function testCount(): void
     {
         $nbUsers = self::$container->get(UserRepository::class)->count([]);
         $this->assertEquals(3, $nbUsers);
     }
 
-    public function testAdminUser()
+    public function testAdminUser(): void
     {
         $admin = self::$container->get(UserRepository::class)->findOneByUsername('admin');
         $this->assertEquals('admin', $admin->getUsername());

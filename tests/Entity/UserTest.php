@@ -20,12 +20,12 @@ class UserTest extends KernelTestCase
         ;
     }
 
-    public function testValidEntity()
+    public function testValidEntity(): void
     {
         $this->assertHasErrors($this->getEntity(), 0);
     }
 
-    public function testInvalidBlanckCodeEntity()
+    public function testInvalidBlanckCodeEntity(): void
     {
         $this->assertHasErrors($this->getEntity()->setUsername(''), 1);
         $this->assertHasErrors($this->getEntity()->setEmail(''), 1);
@@ -33,14 +33,14 @@ class UserTest extends KernelTestCase
         $this->assertHasErrors($this->getEntity()->setRoles([]), 1);
     }
 
-    public function testInvalidLengthEntity()
+    public function testInvalidLengthEntity(): void
     {
         $this->assertHasErrors($this->getEntity()->setUsername($this->getText(256)), 1);
         $this->assertHasErrors($this->getEntity()->setEmail($this->getText(256).'@test.com'), 1);
         $this->assertHasErrors($this->getEntity()->setPassword($this->getText(256)), 1);
     }
 
-    public function testInvalidEmailEntity()
+    public function testInvalidEmailEntity(): void
     {
         $this->assertHasErrors($this->getEntity()->setEmail('test\ger@test.com'), 1);
         $this->assertHasErrors($this->getEntity()->setEmail('test-test.com'), 1);

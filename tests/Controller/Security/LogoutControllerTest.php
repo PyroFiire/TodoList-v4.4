@@ -12,7 +12,7 @@ class LogoutControllerTest extends WebTestCase
     use FixturesTrait;
     use HelperLoginTrait;
 
-    public function testPage()
+    public function testPage(): void
     {
         $this->loadFixtures([UserFixtures::class]);
         $client = $this->login('user');

@@ -25,14 +25,14 @@ class TaskCreateControllerTest extends WebTestCase
         $this->loadFixtures([UserFixtures::class]);
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithUser()
+    public function testAccessWithUser(): void
     {
         $client = $this->login('user');
         $client->request('GET', $this->route);
@@ -40,7 +40,7 @@ class TaskCreateControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Créer une tâche !');
     }
 
-    public function testSuccessForm()
+    public function testSuccessForm(): void
     {
         $client = $this->login('user');
 
@@ -64,7 +64,7 @@ class TaskCreateControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert.alert-success');
     }
 
-    public function testFailedForm()
+    public function testFailedForm(): void
     {
         $client = $this->login('user');
 

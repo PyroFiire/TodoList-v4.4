@@ -25,14 +25,14 @@ class TaskEditControllerTest extends WebTestCase
         $this->loadFixtures([TaskFixtures::class]);
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithAdmin()
+    public function testAccessWithAdmin(): void
     {
         $client = $this->login('admin');
 
@@ -41,7 +41,7 @@ class TaskEditControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Modifier une tâche !');
     }
 
-    public function testAccessWithGoodAuthor()
+    public function testAccessWithGoodAuthor(): void
     {
         $client = $this->login('user');
 
@@ -50,14 +50,14 @@ class TaskEditControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Modifier une tâche !');
     }
 
-    public function testDeniedAccessWithBadAuthor()
+    public function testDeniedAccessWithBadAuthor(): void
     {
         $client = $this->login('user2');
         $client->request('GET', $this->route);
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testSuccessForm()
+    public function testSuccessForm(): void
     {
         $client = $this->login('user');
 
@@ -79,7 +79,7 @@ class TaskEditControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert.alert-success');
     }
 
-    public function testFailedForm()
+    public function testFailedForm(): void
     {
         $client = $this->login('user');
 

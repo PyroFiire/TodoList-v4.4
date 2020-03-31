@@ -17,7 +17,7 @@ class User implements UserInterface
 {
     /**
      * @var int
-     * 
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -26,7 +26,7 @@ class User implements UserInterface
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      * @Assert\Length(max="255")
@@ -35,7 +35,7 @@ class User implements UserInterface
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
@@ -45,7 +45,7 @@ class User implements UserInterface
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir un mot de passe.")
      * @Assert\Length(max="255")
@@ -54,14 +54,14 @@ class User implements UserInterface
 
     /**
      * @var Collection|Task[]
-     * 
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="author")
      */
     private $tasks;
 
     /**
      * @var array
-     * 
+     *
      * @ORM\Column(type="array")
      * @Assert\NotBlank(message="Vous devez saisir un role à l'utilisateur.")
      */

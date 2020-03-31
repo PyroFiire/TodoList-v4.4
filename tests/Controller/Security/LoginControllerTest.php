@@ -11,7 +11,7 @@ class LoginControllerTest extends WebTestCase
 {
     use FixturesTrait;
 
-    public function testPage()
+    public function testPage(): void
     {
         $client = static::createClient();
         $client->request('GET', '/login');
@@ -20,7 +20,7 @@ class LoginControllerTest extends WebTestCase
         $this->assertSelectorNotExists('.alert.alert-danger');
     }
 
-    public function testLoginWithBadCredentials()
+    public function testLoginWithBadCredentials(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
@@ -34,7 +34,7 @@ class LoginControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert.alert-danger');
     }
 
-    public function testSuccessfullLogin()
+    public function testSuccessfullLogin(): void
     {
         $this->loadFixtures([UserFixtures::class]);
         $client = static::createClient();

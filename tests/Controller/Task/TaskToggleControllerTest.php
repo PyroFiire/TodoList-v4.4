@@ -25,14 +25,14 @@ class TaskToggleControllerTest extends WebTestCase
         $this->loadFixtures([TaskFixtures::class]);
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithUser()
+    public function testAccessWithUser(): void
     {
         $client = $this->login('user');
         $client->request('GET', $this->route);

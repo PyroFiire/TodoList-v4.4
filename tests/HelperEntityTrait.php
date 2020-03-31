@@ -2,15 +2,19 @@
 
 namespace App\Tests;
 
+use Symfony\Component\Validator\ConstraintViolation;
+
 trait HelperEntityTrait
 {
-    public function assertHasErrors($object, int $number = 0): void
+    public function assertHasErrors(object $object, int $number = 0): void
     {
         self::bootKernel();
-        $errors = self::$container->get('validator')->validate($object);
+        $validator = self::$container->get('validator');
+        $errors = $validator->validate($object);
         $messages = [];
-        /** @var ConstraintViolation $error */
+
         foreach ($errors as $error) {
+            /* @var ConstraintViolation $error */
             $messages[] = strtoupper($error->getPropertyPath()).' => '.$error->getMessage();
         }
 

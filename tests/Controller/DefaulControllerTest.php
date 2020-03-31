@@ -24,14 +24,14 @@ class DefaultControllerTest extends WebTestCase
         $this->loadFixtures([UserFixtures::class]);
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithUser()
+    public function testAccessWithUser(): void
     {
         $client = $this->login('user');
         $client->request('GET', $this->route);

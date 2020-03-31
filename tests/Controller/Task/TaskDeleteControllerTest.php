@@ -25,14 +25,14 @@ class TaskDeleteControllerTest extends WebTestCase
         $this->loadFixtures([TaskFixtures::class]);
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithGoodAuthor()
+    public function testAccessWithGoodAuthor(): void
     {
         $client = $this->login('user');
 
@@ -46,7 +46,7 @@ class TaskDeleteControllerTest extends WebTestCase
         $this->assertEmpty($task);
     }
 
-    public function testDeniedAccessWithBadAuthor()
+    public function testDeniedAccessWithBadAuthor(): void
     {
         $client = $this->login('user2');
 

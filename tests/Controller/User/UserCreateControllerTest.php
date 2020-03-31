@@ -25,14 +25,14 @@ class UserCreateControllerTest extends WebTestCase
         $this->loadFixtures([UserFixtures::class]);
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithAdmin()
+    public function testAccessWithAdmin(): void
     {
         $client = $this->login('admin');
 
@@ -41,7 +41,7 @@ class UserCreateControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Créer un utilisateur !');
     }
 
-    public function testDeniedAccessWithUser()
+    public function testDeniedAccessWithUser(): void
     {
         $client = $this->login('user');
 
@@ -49,7 +49,7 @@ class UserCreateControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testSuccessForm()
+    public function testSuccessForm(): void
     {
         $client = $this->login('admin');
 
@@ -72,7 +72,7 @@ class UserCreateControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert.alert-success');
     }
 
-    public function testFailedForm()
+    public function testFailedForm(): void
     {
         $client = $this->login('admin');
 

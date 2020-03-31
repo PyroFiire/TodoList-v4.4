@@ -18,12 +18,12 @@ class TaskTest extends KernelTestCase
         ;
     }
 
-    public function testValidEntity()
+    public function testValidEntity(): void
     {
         $this->assertHasErrors($this->getEntity(), 0);
     }
 
-    public function testInvalidLengthEntity()
+    public function testInvalidLengthEntity(): void
     {
         $this->assertHasErrors($this->getEntity()->setTitle($this->getText(256)), 1);
         $this->assertHasErrors($this->getEntity()->setTitle('a'), 1);

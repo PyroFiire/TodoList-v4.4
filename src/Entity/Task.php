@@ -28,7 +28,7 @@ class Task
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Vous devez saisir un titre.")
      * @Assert\Length(min=2, max="255")
@@ -53,7 +53,7 @@ class Task
 
     /**
      * @var User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
      */
     private $author;

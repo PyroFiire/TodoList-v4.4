@@ -10,19 +10,24 @@ class TaskListControllerTest extends WebTestCase
 {
     use HelperLoginTrait;
 
+    /**
+     * @var string
+     */
+    private $route;
+
     public function setUp()
     {
         $this->route = '/tasks';
     }
 
-    public function testRedirectToLogin()
+    public function testRedirectToLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', $this->route);
         $this->assertResponseRedirects('/login');
     }
 
-    public function testAccessWithAdmin()
+    public function testAccessWithAdmin(): void
     {
         $client = $this->login('admin');
         $client->request('GET', $this->route);
@@ -30,7 +35,7 @@ class TaskListControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Liste des tâches !');
     }
 
-    public function testAccessWithUser()
+    public function testAccessWithUser(): void
     {
         $client = $this->login('user');
         $client->request('GET', $this->route);

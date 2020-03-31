@@ -1,9 +1,12 @@
 parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Migrations/*
+        - %currentWorkingDirectory%/tests/bootstrap.php
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     ignoreErrors:
         - '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository::[a-zA-Z0-9\\_]+\(\)#'
     autoload_files:
-        - %currentWorkingDirectory%/tests/controller/DefaulControllerTest.php
+        - bin/.phpunit/phpunit-7.5-0/vendor/autoload.php
+    autoload_directories:
+        - tests/
