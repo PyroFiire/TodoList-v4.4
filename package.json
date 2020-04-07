@@ -2,9 +2,14 @@
   "devDependencies": {
     "husky": "^4.2.3"
   },
+  "scripts": {
+    "fix": "vendor\\bin\\php-cs-fixer fix",
+    "analyse": "vendor\\bin\\phpstan analyse src/ tests/ --level=6",
+    "phpunit": "php bin\\phpunit"
+  },
   "husky": {
     "hooks": {
-        "pre-commit": "vendor/bin/php-cs-fixer fix && vendor/bin/phpstan analyse src/ tests/ --level=6 && php bin/phpunit"
+        "pre-commit": "npm run fix && npm run analyse && npm run phpunit"
     }
   }
 }
